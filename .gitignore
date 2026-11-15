@@ -4,6 +4,7 @@
 .history
 __pycache__
 test-pull
+cookies.json
 logs
 .vscode
 build
