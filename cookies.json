@@ -2,18 +2,18 @@
     "cookies": [
         [
             "YNOTE_CSTK",
-            "888这里填写CSTK",
+            "这里填写CSTK",
             ".note.youdao.com",
             "/"
         ],
         [
             "YNOTE_LOGIN",
-            "888这里填写LOGIN",
+            "这里填写LOGIN",
             ".note.youdao.com",
             "/"
         ],
         [
-            "YNOTE_SESS",           "888这里填写SESS",
+            "YNOTE_SESS",           "这里填写SESS",
             ".note.youdao.com",
             "/"
         ]
