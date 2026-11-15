@@ -4,7 +4,6 @@
 .history
 __pycache__
 test-pull
-cookies.json
 logs
 .vscode
 build
@@ -13,3 +12,4 @@ dist
 wine
 xiaobai
 /YouDaoNote/
+cookies.json
