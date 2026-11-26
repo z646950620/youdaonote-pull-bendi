@@ -1,0 +1,29 @@
+name: keepalive
+
+permissions:
+  contents: write
+
+on:
+  # 每日北京时间 06:00 = UTC 22:00
+  schedule:
+    - cron: "0 22 * * *"
+  workflow_dispatch:
+
+jobs:
+  touch:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Shanghai
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: keepalive
+
+      - name: 更新记录并提交
+        run: |
+          date +"%Y-%m-%dT%H:%M:%S%z" > last-run.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add last-run.txt
+          git commit -m "chore: keepalive $(date +%F)" || echo "无变更"
+          git push origin HEAD:keepalive

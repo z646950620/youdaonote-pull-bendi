@@ -1,7 +1,6 @@
 {
-    "local_dir": "",
+    "local_dir": "D:/python/youdaonote-pull-bendi/YouDaoNote",
     "ydnote_dir": "",
     "smms_secret_token": "",
-    "is_relative_path": true
+	"is_relative_path": false
 }
-

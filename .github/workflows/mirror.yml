@@ -1,0 +1,62 @@
+
+name: Mirror GitHub to GitCode
+
+on:
+  # 有上传（push）触发
+  push:
+    branches:
+      - main
+    #paths-ignore:
+
+  # 每天北京时间 06:30
+  schedule:
+    - cron: '30 6 * * *'
+      timezone: Asia/Shanghai
+
+  # 支持手动触发
+  workflow_dispatch:
+
+# GitHub 源仓库只需要读取权限
+permissions:
+  contents: read
+
+# 防止多个同步任务同时运行
+concurrency:
+  group: github-to-gitcode-mirror
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    name: Sync to GitCode
+    runs-on: ubuntu-latest
+
+    steps:
+      # 第一步：完整克隆 GitHub 仓库
+      - name: Clone GitHub repository
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          GH_AUTH=$(printf '%s' "x-access-token:${GH_TOKEN}" | base64 -w 0)
+
+          git -c http.extraheader="AUTHORIZATION: basic ${GH_AUTH}" \
+            clone --mirror \
+            "https://github.com/z646950620/youdaonote-pull-bendi.git" \
+            mirror.git
+
+      # 第二步：推送所有分支和 Tags 到 GitCode
+      - name: Push mirror to GitCode
+        env:
+          GITCODE_TOKEN: ${{ secrets.GITCODE_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          GC_AUTH=$(printf '%s' "z646950620:${GITCODE_TOKEN}" | base64 -w 0)
+
+          git -C mirror.git \
+            -c http.extraheader="AUTHORIZATION: basic ${GC_AUTH}" \
+            push --mirror \
+            "https://gitcode.com/z646950620/youdaonote-pull-bendi.git"
+
+          echo "Mirror synchronization completed successfully."
